@@ -1,0 +1,32 @@
+name: Upload Packages to Release
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  upload-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build app
+        run: |
+          make build
+          
+      - name: Find .app file
+        id: app_file
+        run: |
+          APP_FILE=$(find . -name "*.app" | head -n 1)
+          echo "app_file=$APP_FILE" >> $GITHUB_ENV
+
+      - name: Upload .app file
+        if: env.app_file != ''
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.app_file }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

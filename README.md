@@ -3,7 +3,7 @@ A terminal emulator for PocketBook e-readers running on Linux.
 ## Description
 A terminal emulator for PocketBook e-readers, written in Go. It uses the libinkview library implementation by dennwc: https://github.com/dennwc/inkview. The project is built using the Docker image from Skeeve: https://github.com/Skeeve/SDK_6.3.0.
 ## Installation
-To install the application, connect your e-reader to your computer via a cable and copy the release file to the `applications` folder. On Linux, you can build the application from source using the command `make build` and automatically install it on the connected e-reader using the command `make instal`
+To install the application, connect your e-reader to your computer via a cable and copy the [release](https://github.com/CatInBeard/pb-terminal/releases/) file to the `applications` folder. On Linux, you can build the application from source using the command `make build` and automatically install it on the connected e-reader using the command `make install`
 ## License
 The project is licensed under the MIT license.
 ## Warning
