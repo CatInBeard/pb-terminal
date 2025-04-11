@@ -16,17 +16,13 @@ jobs:
       - name: Build app
         run: |
           make build
-          
-      - name: Find .app file
-        id: app_file
+      - name: Archive data
         run: |
-          APP_FILE=$(find . -name "*.app" | head -n 1)
-          echo "app_file=$APP_FILE" >> $GITHUB_ENV
+          zip -r release.zip *.app
 
-      - name: Upload .app file
-        if: env.app_file != ''
+      - name: Upload release
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ env.app_file }}
+          files: release.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

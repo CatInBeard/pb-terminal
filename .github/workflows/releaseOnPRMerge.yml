@@ -70,8 +70,3 @@ jobs:
               body: releaseNotes,
             });
 
-      - name: Upload release assets
-        uses: actions/upload-artifact@v2
-        with:
-          name: release
-          path: .
