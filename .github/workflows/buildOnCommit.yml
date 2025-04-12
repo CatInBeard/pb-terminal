@@ -1,24 +1,18 @@
 name: Build on commit
 
-on:
-  pull_request:
-    types: [opened, synchronize]
-    branches-ignore:
-      - main
+on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build
+        uses: actions/checkout@v3
+      - name: Build app
         run: |
           make build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload app to artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: terminal.app
