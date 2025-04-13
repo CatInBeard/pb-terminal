@@ -1,4 +1,4 @@
-# pb-terminal
+# pb-terminal [![Build application](https://github.com/CatInBeard/pb-terminal/actions/workflows/buildOnCommit.yml/badge.svg)](https://github.com/CatInBeard/pb-terminal/actions/workflows/buildOnCommit.yml)
 A terminal emulator for PocketBook e-readers running on Linux.
 [More info](https://catinbeard.github.io/pb-terminal/)
 ![terminal image](docs/terminal01.jpg)
