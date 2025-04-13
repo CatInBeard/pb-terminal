@@ -41,9 +41,78 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+<<<<<<< Updated upstream
           tag_name: ${{ env.RELEASE_TAG }}
           release_name: ${{ env.RELEASE_NAME }}
           body: ${{ env.RELEASE_BODY }}
           draft: false
           prerelease: false
           
+=======
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const latestRelease = github.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            console.log(latestRelease.data.tag_name);
+
+      - name: Get commits since last release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const latestRelease = github.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            const commits = github.repos.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              since: latestRelease.data.published_at,
+            });
+            const commitMessages = commits.data.map(commit => commit.commit.message);
+            console.log(commitMessages);
+
+      - name: Create release
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pullRequest = github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.pullRequest.number,
+            });
+            const version = `0.${context.pullRequest.number}`;
+            const releaseNotes = github.repos.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              since: github.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              }).data.published_at,
+            }).data.map(commit => commit.commit.message).join('\n');
+            github.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: version,
+              name: version,
+              body: releaseNotes,
+            });
+      - name: Build app
+        run: |
+          make build
+      - name: Archive data
+        run: |
+          zip -r release.zip *.app
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+
+>>>>>>> Stashed changes
