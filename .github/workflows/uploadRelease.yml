@@ -2,7 +2,7 @@ name: Upload Packages to Release
 
 on:
   release:
-    types: [created]
+    types: [created, published, prereleased, released]
 
 permissions:
   contents: write
