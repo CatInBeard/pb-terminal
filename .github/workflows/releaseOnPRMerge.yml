@@ -25,11 +25,11 @@ jobs:
         run: git status
       - name: Get commit number after last release
         run: |
-          COMMIT_NUMBER_AFTER_LAST_RELEASE=$(git rev-list --count HEAD)
+          COMMIT_NUMBER_AFTER_LAST_RELEASE=$(git rev-list --count HEAD ^$(git log --format=%H --all --grep='Merge pull request' | head -1))
           echo "COMMIT_NUMBER_AFTER_LAST_RELEASE=$COMMIT_NUMBER_AFTER_LAST_RELEASE" >> $GITHUB_ENV
       - name: Set variables
         run: |
-          RELEASE_TAG="0.${LAST_PR_NUMBER}.${COMMIT_NUMBER_AFTER_LAST_RELEASE}-1"
+          RELEASE_TAG="0.${LAST_PR_NUMBER}.${COMMIT_NUMBER_AFTER_LAST_RELEASE}"
           RELEASE_NAME="Release ${RELEASE_TAG}"
           RELEASE_BODY="${LAST_PR_TITLE}"
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
