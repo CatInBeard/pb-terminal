@@ -15,14 +15,10 @@ jobs:
           fetch-depth: 0
       - name: Get last PR number and title
         run: |
-          LAST_PR_NUMBER=$(git log --format=%s --all --grep='Merge pull request' | head -1 | cut -d' ' -f4 | cut -d'/' -f2 | sed 's/#//g')
-          LAST_PR_TITLE=$(git log --format=%s --all --grep='Merge pull request' | head -1)
+          LAST_PR_NUMBER=$(git log --format=%s --grep='Merge pull request' | head -1 | cut -d' ' -f4 | cut -d'/' -f2 | sed 's/#//g')
+          LAST_PR_TITLE=$(git log --format=%s --grep='Merge pull request' | head -1)
           echo "LAST_PR_NUMBER=$LAST_PR_NUMBER" >> $GITHUB_ENV
           echo "LAST_PR_TITLE=$LAST_PR_TITLE" >> $GITHUB_ENV
-      - name: test
-        run: git log --all --format=%s
-      - name: test2
-        run: git status
       - name: Get commit number after last release
         run: |
           COMMIT_NUMBER_AFTER_LAST_RELEASE=$(git rev-list --count HEAD)
@@ -41,14 +37,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-<<<<<<< Updated upstream
           tag_name: ${{ env.RELEASE_TAG }}
           release_name: ${{ env.RELEASE_NAME }}
           body: ${{ env.RELEASE_BODY }}
           draft: false
           prerelease: false
           
-=======
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const latestRelease = github.repos.getLatestRelease({
@@ -115,4 +109,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
 
->>>>>>> Stashed changes
