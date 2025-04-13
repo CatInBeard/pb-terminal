@@ -29,6 +29,7 @@ type TerminalApp struct {
 
 func (a *TerminalApp) Init() error {
 	ink.ClearScreen()
+	ink.DrawTopPanel()
 
 	ink.SetKeyboardHandler(a.terminalKeyboardHandler)
 
@@ -67,6 +68,7 @@ func (a *TerminalApp) Draw() {
 	}
 
 	ink.ClearScreen()
+	ink.DrawTopPanel()
 	a.font.SetActive(color.RGBA{0, 0, 0, 255})
 
 	screenSize := ink.ScreenSize()
