@@ -142,6 +142,11 @@ func (a *TerminalApp) HandleTerminalError() {
 }
 
 func (a *TerminalApp) RunCommand(s string) {
+	if strings.TrimSpace(s) == "clear" {
+		a.outputText = ""
+		ink.Repaint()
+		return
+	}
 	a.outputText = a.outputText + "\n$ " + s
 	a.terminalInputChan <- s
 }
