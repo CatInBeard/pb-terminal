@@ -1,6 +1,7 @@
 # pb-terminal
 A terminal emulator for PocketBook e-readers running on Linux.
-![terminal image](docs/teminal01.jpg)
+[More info](https://catinbeard.github.io/pb-terminal/)
+![terminal image](docs/terminal01.jpg)
 ## Description
 A terminal emulator for PocketBook e-readers, written in Go. It uses the libinkview library implementation by dennwc: https://github.com/dennwc/inkview. The project is built using the Docker image from Skeeve: https://github.com/Skeeve/SDK_6.3.0.
 ## Installation
