@@ -45,4 +45,4 @@ jobs:
           release_name: ${{ env.RELEASE_NAME }}
           body: ${{ env.RELEASE_BODY }}
           draft: false
-          prerelease: false
+          prerelease: true
