@@ -5,8 +5,10 @@
 package main
 
 import (
+	_ "embed"
 	"image"
 	"image/color"
+	"os"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -32,6 +34,7 @@ func (a *TerminalApp) Init() error {
 	ink.ClearScreen()
 	ink.DrawTopPanel()
 
+	createCustomKeyboardIfNotExists()
 	ink.SetKeyboardHandler(a.terminalKeyboardHandler)
 
 	a.font = ink.OpenFont(ink.DefaultFontMono, a.fontH, true)
@@ -131,10 +134,13 @@ func (a *TerminalApp) HandleTerminalError() {
 }
 
 func (a *TerminalApp) RunCommand(s string) {
-	if strings.TrimSpace(s) == "clear" {
+	trimText := strings.TrimSpace(s)
+	if trimText == "clear" {
 		a.outputText = ""
 		ink.Repaint()
 		return
+	} else if trimText == "exit" {
+		ink.Exit()
 	}
 	a.outputText = a.outputText + "\n$ " + s
 	a.terminalInputChan <- s
@@ -146,7 +152,7 @@ func (a *TerminalApp) terminalKeyboardHandler(text string) {
 }
 
 func (a *TerminalApp) invokeKeybaord(label string) {
-	ink.OpenKeyboard(label, 1024)
+	ink.OpenCustomKeyboard(ink.UserKbdPath+"/devkeyboard.kbd", label, 1024)
 }
 
 func splitText(inputStr string, maxLen int) []string {
@@ -173,4 +179,19 @@ func splitText(inputStr string, maxLen int) []string {
 	}
 
 	return result
+}
+
+//go:embed devkeyboard.kbd
+var testKbd []byte
+
+func createCustomKeyboardIfNotExists() error {
+	filePath := ink.UserKbdPath + "/devkeyboard.kbd"
+	_, err := os.Stat(filePath)
+	if err != nil {
+		err = os.WriteFile(filePath, testKbd, 0644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
