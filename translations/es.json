@@ -1,0 +1,5 @@
+{
+    "warning_title": "Bienvenido a la aplicación de terminal",
+    "warning_text" : "Esta aplicación se proporciona \"tal como está\" bajo la licencia MIT. El código fuente está disponible en https://github.com/catInBeard/pb-terminal. El uso de esta aplicación de emulador de terminal puede suponer riesgos para su sistema y datos. Dado que emula una terminal, puede ejecutar comandos que puedan dañar su sistema o comprometer sus datos. Debe tener extrema precaución al utilizar esta aplicación, especialmente al ejecutar comandos o scripts de fuentes no confiables. Al utilizar esta aplicación, usted reconoce que entiende estos riesgos y libera a los desarrolladores de cualquier responsabilidad por daños o pérdidas resultantes de su uso. Proceda con precaución y bajo su propio riesgo.",
+    "hello_cmd_text" : "Bienvenido a la aplicación de terminal!"
+}

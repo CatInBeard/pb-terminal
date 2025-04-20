@@ -5,8 +5,10 @@
 package main
 
 import (
+	_ "embed"
 	"image"
 	"image/color"
+	"os"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -26,12 +28,16 @@ type TerminalApp struct {
 	fontW              int
 	topTextBoxPosition int
 	shouldUpdateScreen bool
+	lang               string
 }
 
 func (a *TerminalApp) Init() error {
 	ink.ClearScreen()
 	ink.DrawTopPanel()
 
+	a.lang = ink.GetCurrentLang()
+
+	createCustomKeyboardIfNotExists()
 	ink.SetKeyboardHandler(a.terminalKeyboardHandler)
 
 	a.font = ink.OpenFont(ink.DefaultFontMono, a.fontH, true)
@@ -43,12 +49,12 @@ func (a *TerminalApp) Init() error {
 	go a.HandleTerminalOutput()
 	go a.HandleTerminalError()
 
-	ink.SetMessageDelay(time.Second * 5)
+	ink.SetMessageDelay(time.Second * 10)
 
-	ink.Warningf("Welcome to terminal app", "This application is provided \"as is\" under the MIT license. The source code is available at https://github.com/catInBeard/pb-terminal. Using this terminal emulator application can pose risks to your system and data. Since it emulates a terminal, it can potentially execute commands that may harm your system or compromise your data. You should exercise extreme caution when using this application, especially when executing commands or scripts from untrusted sources. By using this application, you acknowledge that you understand these risks and release the developers from any liability for damages or losses resulting from its use. Proceed with caution and at your own risk.")
+	ink.Warningf(a.GetTranslation("warning_title"), a.GetTranslation("warning_text"))
 
 	a.shouldUpdateScreen = true
-	a.RunCommand("echo \"Welcome to terminal app!\"")
+	a.RunCommand("echo \"" + a.GetTranslation("hello_cmd_text") + "\"")
 	a.Draw()
 	ink.Repaint()
 
@@ -131,10 +137,13 @@ func (a *TerminalApp) HandleTerminalError() {
 }
 
 func (a *TerminalApp) RunCommand(s string) {
-	if strings.TrimSpace(s) == "clear" {
+	trimText := strings.TrimSpace(s)
+	if trimText == "clear" {
 		a.outputText = ""
 		ink.Repaint()
 		return
+	} else if trimText == "exit" {
+		ink.Exit()
 	}
 	a.outputText = a.outputText + "\n$ " + s
 	a.terminalInputChan <- s
@@ -146,7 +155,7 @@ func (a *TerminalApp) terminalKeyboardHandler(text string) {
 }
 
 func (a *TerminalApp) invokeKeybaord(label string) {
-	ink.OpenKeyboard(label, 1024)
+	ink.OpenCustomKeyboard(ink.UserKbdPath+"/devkeyboard.kbd", label, 1024)
 }
 
 func splitText(inputStr string, maxLen int) []string {
@@ -173,4 +182,23 @@ func splitText(inputStr string, maxLen int) []string {
 	}
 
 	return result
+}
+
+func (a *TerminalApp) GetTranslation(key string) string {
+	return GetTranslation(a.lang, key)
+}
+
+//go:embed devkeyboard.kbd
+var testKbd []byte
+
+func createCustomKeyboardIfNotExists() error {
+	filePath := ink.UserKbdPath + "/devkeyboard.kbd"
+	_, err := os.Stat(filePath)
+	if err != nil {
+		err = os.WriteFile(filePath, testKbd, 0644)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

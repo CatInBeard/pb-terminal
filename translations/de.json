@@ -1,0 +1,5 @@
+{
+    "warning_title": "Willkommen in der Terminal-Anwendung",
+    "warning_text" : "Diese Anwendung wird \"wie besehen\" unter der MIT-Lizenz bereitgestellt. Der Quellcode ist auf https://github.com/catInBeard/pb-terminal verfügbar. Die Verwendung dieser Terminal-Emulator-Anwendung kann Risiken für Ihr System und Ihre Daten darstellen. Da sie einen Terminal emuliert, kann sie Befehle ausführen, die Ihr System schädigen oder Ihre Daten gefährden können. Sie sollten bei der Verwendung dieser Anwendung äußerste Vorsicht walten lassen, insbesondere bei der Ausführung von Befehlen oder Skripten von nicht vertrauenswürdigen Quellen. Durch die Verwendung dieser Anwendung erkennen Sie an, dass Sie diese Risiken verstehen und die Entwickler von jeder Haftung für Schäden oder Verluste, die durch ihre Verwendung entstehen, freistellen. Vorsicht walten lassen und auf eigene Gefahr handeln.",
+    "hello_cmd_text" : "Willkommen in der Terminal-Anwendung!"
+}
