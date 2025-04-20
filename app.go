@@ -28,11 +28,14 @@ type TerminalApp struct {
 	fontW              int
 	topTextBoxPosition int
 	shouldUpdateScreen bool
+	lang               string
 }
 
 func (a *TerminalApp) Init() error {
 	ink.ClearScreen()
 	ink.DrawTopPanel()
+
+	a.lang = ink.GetCurrentLang()
 
 	createCustomKeyboardIfNotExists()
 	ink.SetKeyboardHandler(a.terminalKeyboardHandler)
@@ -46,12 +49,12 @@ func (a *TerminalApp) Init() error {
 	go a.HandleTerminalOutput()
 	go a.HandleTerminalError()
 
-	ink.SetMessageDelay(time.Second * 5)
+	ink.SetMessageDelay(time.Second * 10)
 
-	ink.Warningf("Welcome to terminal app", "This application is provided \"as is\" under the MIT license. The source code is available at https://github.com/catInBeard/pb-terminal. Using this terminal emulator application can pose risks to your system and data. Since it emulates a terminal, it can potentially execute commands that may harm your system or compromise your data. You should exercise extreme caution when using this application, especially when executing commands or scripts from untrusted sources. By using this application, you acknowledge that you understand these risks and release the developers from any liability for damages or losses resulting from its use. Proceed with caution and at your own risk.")
+	ink.Warningf(a.GetTranslation("warning_title"), a.GetTranslation("warning_text"))
 
 	a.shouldUpdateScreen = true
-	a.RunCommand("echo \"Welcome to terminal app!\"")
+	a.RunCommand("echo \"" + a.GetTranslation("hello_cmd_text") + "\"")
 	a.Draw()
 	ink.Repaint()
 
@@ -179,6 +182,10 @@ func splitText(inputStr string, maxLen int) []string {
 	}
 
 	return result
+}
+
+func (a *TerminalApp) GetTranslation(key string) string {
+	return GetTranslation(a.lang, key)
 }
 
 //go:embed devkeyboard.kbd
