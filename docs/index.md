@@ -36,3 +36,5 @@ A: The /bin/sh command interpreter is used in the terminal emulator.
 A: Busybox is a set of utilities that provide basic command-line functions. It is used in the terminal emulator because it is lightweight and efficient.
 * Q: How to update the terminal emulator to the latest version?  
 A: To update the terminal emulator, simply replace the existing application file with the new one downloaded from release(https://github.com/CatInBeard/pb-terminal/releases/). This can be done by connecting the e-reader to your computer and copying the new file to the applications folder, replacing the existing file. This is similar to the initial installation process of the application.
+* Q: Network requests don't work, for example wget  
+A: By default, the application does not request network access to save battery life, like any other pb application. To allow the application to use the network, you need to write `network`, then the application will use the network and network requests will be available.

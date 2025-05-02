@@ -138,13 +138,21 @@ func (a *TerminalApp) HandleTerminalError() {
 
 func (a *TerminalApp) RunCommand(s string) {
 	trimText := strings.TrimSpace(s)
-	if trimText == "clear" {
+	switch trimText {
+
+	case "clear":
 		a.outputText = ""
 		ink.Repaint()
 		return
-	} else if trimText == "exit" {
+	case "text":
 		ink.Exit()
+
+	case "network":
+		ink.QueryNetwork()
+		ink.ConnectDefault()
+		return
 	}
+
 	a.outputText = a.outputText + "\n$ " + s
 	a.terminalInputChan <- s
 }
